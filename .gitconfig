@@ -1,0 +1,9 @@
+[user]
+	name = frezcirno
+	email = 2277861660@qq.com
+[http]
+	proxy = http://localhost:7890
+[https]
+	proxy = http://localhost:7890
+[init]
+	defaultBranch = main
