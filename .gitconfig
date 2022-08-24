@@ -7,3 +7,5 @@
 	proxy = http://localhost:7890
 [init]
 	defaultBranch = main
+[core]
+	editor = vi
