@@ -64,9 +64,6 @@ bindsym Mod1+Control+b exec exec google-chrome
 # start the bluetooth
 # bindsym Mod1+Control+b exec blueman-manager
 
-# start the rem
-bindsym Mod1+Control+r exec remarkable
-
 # arandr
 bindsym Mod1+Control+n exec arandr
 
@@ -79,7 +76,11 @@ bindsym Mod1+Control+t exec thunderbird
 # code
 bindsym Mod1+Control+c exec code
 
+# steam
 bindsym Mod1+Control+s exec steam
+
+# dingtalk
+bindsym Mod1+Control+d exec gtk-launch com.alibabainc.dingtalk
 
 # kill focused window
 bindsym $mod+q kill
@@ -126,7 +127,7 @@ bindsym $mod+Shift+Control+Left move workspace to output left
 bindsym $mod+Shift+Control+Right move workspace to output right
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+bindsym $mod+a fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -140,10 +141,10 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+= focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+#bindsym $mod+- focus child
 
 # disable focus follows mouse and control focus only by using your keyboard
 focus_follows_mouse no
@@ -204,6 +205,8 @@ bindsym $mod+Shift+Control+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
+
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
@@ -226,8 +229,6 @@ mode "resize" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-
-bindsym $mod+r mode "resize"
 
 # xrandr
 exec --no-startup-id sh .screenlayout/default.sh 
