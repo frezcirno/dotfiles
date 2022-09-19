@@ -104,8 +104,11 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # The same as windows
-bindsym Mod1+Tab focus left
-bindsym Mod1+Shift+Tab focus right
+bindsym Mod1+Tab focus right
+bindsym Mod1+Shift+Tab focus left
+# Make use of mod key
+bindsym $mod+Tab focus left
+bindsym $mod+Shift+Tab focus right
 
 # Force focus wrapping
 focus_wrapping workspace
