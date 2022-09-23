@@ -1,0 +1,18 @@
+[user]
+	name = frezcirno
+	email = 2277861660@qq.com
+[init]
+	defaultBranch = main
+[core]
+	editor = vi
+	autocrlf = input
+[alias]
+	a = add
+	st = status
+	ch = checkout
+	br = branch
+	ta = tag
+	tags = tag -l
+    co = commit
+	pu = push
+	p = pull

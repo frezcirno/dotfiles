@@ -1,0 +1,10 @@
+[Unit]
+Description=Clash
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/clash -d /etc/clash
+
+[Install]
+WantedBy=default.target
