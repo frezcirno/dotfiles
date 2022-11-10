@@ -23,10 +23,10 @@ workspace_layout tabbed
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
-set $up k
-set $down j
-set $left h
-set $right l
+set $up h
+set $down l
+set $left j
+set $right k
 
 # Mod1 = alt
 # Mod4 = win
@@ -37,7 +37,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec exec qterminal
-bindsym $mod+Shift+Return exec exec nautilus 
+bindsym $mod+Shift+Return exec exec nautilus
 
 # audio
 bindsym XF86AudioMute exec pulseaudio-control togmute #amixer -D pulse sset Master toggle
@@ -52,7 +52,7 @@ bindsym XF86MonBrightnessUp exec sudo brightnessctl set 5%+
 bindsym Print exec flameshot gui
 
 # i3lock
-bindsym Mod1+Control+l exec i3lock
+bindsym Mod1+Control+l exec i3lock -c 000000 && sleep 1 && xset dpms force suspend
 
 # ------------
 # Applications
