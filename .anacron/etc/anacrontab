@@ -1,0 +1,11 @@
+# /etc/anacrontab: configuration file for anacron
+
+# See anacron(8) and anacrontab(5) for details.
+
+SHELL=/bin/bash
+HOME=/home/frezcirno
+PATH=/home/frezcirno/.local/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+LOGNAME=frezcirno
+
+# period(days)  delay(mins)  job-identifier  command
+1	10	wallpaper	BingWallpaper -k -t $HOME/.wallpaper -s no; feh --bg-scale --randomize $HOME/.wallpaper/*
