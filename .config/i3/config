@@ -17,8 +17,13 @@ font pango:monospace 8
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
 
-# gaps inner 5
-# smart_gaps on
+gaps inner 10
+smart_gaps on
+
+# border
+# normal|none|pixel <px>
+default_border none
+
 workspace_layout tabbed
 
 # use these keys for focus, movement, and resize directions when reaching for
@@ -70,8 +75,8 @@ bindsym Mod1+Control+n exec arandr
 # start the win10
 bindsym Mod1+Control+v exec $HOME/win/start_win.sh
 
-# thunderbird
-bindsym Mod1+Control+t exec thunderbird
+# zotero
+bindsym Mod1+Control+z exec zotero
 
 # code
 bindsym Mod1+Control+c exec code
@@ -86,7 +91,7 @@ bindsym Mod1+Control+d exec gtk-launch com.alibabainc.dingtalk
 bindsym $mod+q kill
 
 # run rofi
-bindsym Mod1+space exec rofi -modi run#drun -show run
+bindsym Mod1+space exec ~/.config/rofi/launcher.sh
 
 # restart polybar
 bindsym $mod+Shift+b exec ~/.config/polybar/launch.sh
@@ -242,9 +247,6 @@ exec --no-startup-id sh .screenlayout/default.sh
 
 # screen timeout
 exec --no-startup-id xset dpms 600 800 900
-
-# border
-default_border none
 
 # picom
 # exec --no-startup-id picom --experimental-backends -b 
