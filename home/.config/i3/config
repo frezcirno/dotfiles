@@ -276,8 +276,11 @@ exec --no-startup-id exec nm-applet
 # bluetooth manager
 exec --no-startup-id exec blueman-applet
 
-# bluetooth manager
+# eye protection
 exec --no-startup-id exec safeeyes
+
+# clash for windows
+exec --no-startup-id exec ~/cfw/cfw
 
 # Map Caps_Lock to Multi_key
 exec --no-startup-id exec xmodmap ~/.Xmodmap
