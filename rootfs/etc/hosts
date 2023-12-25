@@ -1,6 +1,11 @@
 127.0.0.1	localhost
 127.0.1.1	computer
 
+43.249.193.55    frezcirno.home
+43.249.193.55    navi.frezcirno.home
+43.249.193.55    mcskin.frezcirno.home
+43.249.193.55    vaultw.frezcirno.home
+
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes

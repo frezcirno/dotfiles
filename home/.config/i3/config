@@ -47,13 +47,18 @@ bindsym $mod+Return exec exec alacritty
 bindsym $mod+Shift+Return exec exec nautilus
 
 # audio
-bindsym XF86AudioMute exec pulseaudio-control togmute #amixer -D pulse sset Master toggle
-bindsym XF86AudioLowerVolume exec pulseaudio-control down #amixer sset Master 5%-
-bindsym XF86AudioRaiseVolume exec pulseaudio-control up #amixer sset Master 5%+
+bindsym XF86AudioMute exec pulseaudio-control togmute
+bindsym Mod4+F2 exec pulseaudio-control togmute
+bindsym XF86AudioLowerVolume exec pulseaudio-control down
+bindsym Mod4+F3 exec pulseaudio-control down
+bindsym XF86AudioRaiseVolume exec pulseaudio-control up
+bindsym Mod4+F4 exec pulseaudio-control up
 
 # backlight
 bindsym XF86MonBrightnessDown exec sudo brightnessctl set 5%-
+bindsym Mod4+F5 exec sudo brightnessctl set 5%-
 bindsym XF86MonBrightnessUp exec sudo brightnessctl set 5%+
+bindsym Mod4+F6 exec sudo brightnessctl set 5%+
 
 # Screenshot
 bindsym Print exec flameshot gui
@@ -146,14 +151,8 @@ bindsym $mod+e layout toggle split
 
 bindsym $mod+Shift+w [tiling workspace="__focused__"] move workspace "0"; [workspace="0"] move workspace current
 
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
-
 # focus the parent container
-bindsym $mod+= focus parent
+bindsym $mod+@ focus parent
 
 # focus the child container
 #bindsym $mod+- focus child
@@ -165,11 +164,17 @@ focus_follows_mouse no
 mouse_warping none
 
 # move the currently focused window to the scratchpad
-bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus move scratchpad
 
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
-bindsym $mod+minus scratchpad show
+bindsym $mod+p scratchpad show
+
+# toggle tiling / floating
+bindsym $mod+space floating toggle
+
+# change focus between tiling / floating windows
+# bindsym $mod+space focus mode_toggle
 
 # workspace outputs
 workspace 1 output primary
@@ -249,11 +254,8 @@ mode "resize" {
 # xrandr
 exec --no-startup-id sh .screenlayout/default.sh 
 
-# screen timeout
-exec --no-startup-id xset dpms 600 800 900
-
 # picom
-# exec --no-startup-id picom --experimental-backends -b 
+# exec --no-startup-id picom --experimental-backends -b
 
 # background
 exec --no-startup-id ~/.fehbg
@@ -268,7 +270,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id exec lxpolkit
 
 # copyq clipboard manager
-exec --no-startup-id exec copyq --start-server
+exec --no-startup-id "sleep 10; copyq"
 
 # network manager
 exec --no-startup-id exec nm-applet
@@ -276,17 +278,20 @@ exec --no-startup-id exec nm-applet
 # bluetooth manager
 exec --no-startup-id exec blueman-applet
 
-# eye protection
+# bluetooth manager
 exec --no-startup-id exec safeeyes
-
-# clash for windows
-exec --no-startup-id exec ~/cfw/cfw
 
 # Map Caps_Lock to Multi_key
 exec --no-startup-id exec xmodmap ~/.Xmodmap
 
 # alternating splith and splitv for new windows
 exec --no-startup-id ~/.local/bin/alternating_layouts.py
+
+# James DSP
+exec --no-startup-id exec jamesdsp
+
+# 300s to close the screen
+exec --no-startup-id xset dpms 300 300 300
 
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a

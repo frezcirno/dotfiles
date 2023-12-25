@@ -1,18 +1,34 @@
-HISTSIZE=50000
-HISTFILESIZE=100000
+# how many commands
+HISTSIZE=500000
+# how many lines
+HISTFILESIZE=1000000
 
-#PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(hs=$(git rev-parse --short HEAD 2>/dev/null); [[ -n $hs ]] && { br=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); br=${br%HEAD}; echo "(\[\033[01;34m\]${br:-$hs}\[\033[00m\])"; })\$ '
-PS1='\[$(tput setaf 214)\](\t)\
+__exit_status() {
+    local exit=$?
+    if [[ ! "$exit" -eq 0 ]]; then
+        echo "($exit)"
+    fi
+}
+
+__git_branch() {
+    local branch
+    branch=$(git symbolic-ref -q --short HEAD 2>/dev/null || git describe --tags --exact-match 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
+    if [[ -n "${branch}" ]]; then
+        echo "(${branch})"
+    fi
+}
+
+# tput bold; tput setaf 1
+PS1='\[\e[01;31m\]$(__exit_status)\[$(tput sgr0)\]\
+\[$(tput setaf 214)\](\t)\
 \[$(tput setaf 226)\]\u\
 \[$(tput setaf 220)\]@\
-\[\033[01;32m\]\h\
-\[\033[00m\]:\
-\[\033[01;34m\]\w\
-\[$(tput setaf 13)\]$(hs=$(git symbolic-ref -q --short HEAD 2>/dev/null \
-                        || git describe --tags --exact-match 2>/dev/null \
-                        || git rev-parse --short HEAD 2>/dev/null);\
-                      [[ -n $hs ]] && echo "($hs)")\
-\[\033[00m\]\$ '
+\[$(tput bold; tput setaf 2)\]\h\
+\[$(tput sgr0)\]:\
+\[$(tput bold; tput setaf 4)\]\w\
+\[$(tput setaf 13)\]$(__git_branch)\
+\[$(tput setaf 2)\]\$\
+\[$(tput sgr0)\] '
 
 alias ll='ls -l'
 alias la='ls -A'
@@ -21,6 +37,7 @@ alias ..='command cd ..'
 alias ...='command cd ../..'
 alias ....='command cd ../../..'
 alias .....='command cd ../../../..'
+alias cd..='command cd ..'
 alias .3='command cd ../../..'
 alias .4='command cd ../../../..'
 alias .5='command cd ../../../../..'
@@ -51,8 +68,8 @@ source "$HOME/.cargo/env"
 
 # Node Version Manager
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
@@ -69,3 +86,5 @@ export PATH="$HOME/.gem/ruby/3.0.0/bin:$PATH"
 export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
+# fbinfer
+export PATH="$HOME/infer-linux64-v1.1.0/bin:$PATH"

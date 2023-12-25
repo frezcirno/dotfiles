@@ -1,10 +1,14 @@
+# -- THEME AUTO-WRITTEN DO NOT EDIT
+include "/usr/share/themes/Adwaita/gtk-2.0/gtkrc"
 
-# Created by lxqt-config-appearance (DO NOT EDIT!)
-gtk-theme-name = "Adwaita"
-gtk-icon-theme-name = "Papirus-Light"
-gtk-font-name = "Ubuntu 18"
-gtk-button-images = 1
-gtk-menu-images = 1
-gtk-toolbar-style = GTK_TOOLBAR_BOTH_HORIZ
-gtk-cursor-theme-name = deepin
-gtk-cursor-theme-size =
+style "user-font" {
+	font_name = "Ubuntu 12"
+}
+
+widget_class "*" style "user-font"
+
+gtk-font-name="Ubuntu 12"
+
+include "/home/frezcirno/.gtkrc.mine"
+
+# -- THEME AUTO-WRITTEN DO NOT EDIT

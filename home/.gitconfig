@@ -1,6 +1,6 @@
 [user]
-	name = frezcirno
-	email = 2277861660@qq.com
+	name = Zixuan Tan
+	email = tanzixuan.me@gmail.com
 [init]
 	defaultBranch = main
 [core]
@@ -8,11 +8,33 @@
 	autocrlf = input
 [alias]
 	a = add
+    l = log
 	st = status
+	c = checkout
 	ch = checkout
+	b = branch
 	br = branch
+	branchs = branch -a
+	branches = branch -a
 	ta = tag
 	tags = tag -l
     co = commit
 	pu = push
 	p = pull
+[pull]
+	rebase = true
+[safe]
+	directory = /home/frezcirno/go/src/github.com/kata-containers/tests
+	directory = /home/zhangzhang/stp/ubus
+	directory = /home/zhangzhang/stp/libubox
+	directory = /home/zhangzhang/stp/ustp
+	directory = /home/zhangzhang/stp
+	directory = /home/zhangzhang/stp/my_ustp
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[filesystem "Oracle Corporation|1.8.0_342|/dev/nvme0n1p6"]
+	timestampResolution = 1001 microseconds
+	minRacyThreshold = 7809 microseconds
