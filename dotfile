@@ -127,6 +127,13 @@ function install() {
 	fi
 }
 
+function install_all() {
+	# install all files
+	for path_in_repo in $(git ls-files); do
+		_install_file ${path_in_repo}
+	done
+}
+
 function retrack() {
 	# track all files
 	for path_in_repo in $(git ls-files); do
