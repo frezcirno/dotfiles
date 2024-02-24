@@ -1,0 +1,207 @@
+#!/bin/bash
+set -e # exit on error
+# set -x # show command
+
+function exists() {
+	local path=$1
+	[ -f "${path}" ] # && [ $(stat -c "%h" ${path}) -eq 2 ]
+}
+
+# convert real path to path in repo
+# "/home/user/xxx" -> "home/xxx"
+# "/xxx" -> "rootfs/xxx"
+function path2repo() {
+	local path=$(realpath $1)
+	if [[ "${path}" =~ ^${HOME} ]]; then
+		echo $(sed -e "s|^${HOME}|home|" <<<${path})
+	elif [[ "${path}" =~ ^/ ]]; then
+		echo $(sed -e "s|^/|rootfs/|" <<<${path})
+	else
+		echo ${path}
+	fi
+}
+
+# convert path in repo to real path
+# "home/xxx" -> "/home/user/xxx"
+# "rootfs/xxx" -> "/xxx"
+function repo2path() {
+	local path_in_repo=$1
+	if [[ "${path_in_repo}" =~ ^home ]]; then
+		echo $(sed -e "s|home|${HOME}|" <<<${path_in_repo})
+	elif [[ "${path_in_repo}" =~ ^rootfs ]]; then
+		echo $(sed -e "s|^rootfs/|/|" <<<${path_in_repo})
+	else
+		echo ${path_in_repo}
+	fi
+}
+
+# track a file into git repo
+function _track_file() {
+	local path=$(realpath $1)
+	local path_in_repo=$(path2repo ${path})
+
+	if [ ! -f "${path}" ]; then
+		echo "file not exists: ${path}"
+		return
+	fi
+
+	if [ ! -f "${path_in_repo}" ]; then
+		mkdir -p $(dirname ${path_in_repo})
+		# delete original link and create a new one
+		rm -f ${path_in_repo}
+		cp ${path} ${path_in_repo}
+		# Git tracks exactly one bit of permission: executable or not executable.
+		# https://superuser.com/questions/1422630/how-git-works-when-the-file-permission-mode-is-changed
+		chmod $(stat -c "%a" ${path}) ${path_in_repo}
+		echo "track ${path_in_repo} -> ${path}"
+	else
+		echo "skip ${path_in_repo} -> ${path}"
+	fi
+}
+
+function track() {
+	local path=$(realpath $1)
+
+	if [ -f "${path}" ]; then
+		_track_file ${path}
+	elif [ -d "${path}" ]; then
+		for file in $(find ${path} -type f -and -not -path './.git/*'); do
+			_track_file ${file}
+		done
+	fi
+}
+
+# untrack a file from git repo
+function _untrack_file() {
+	local path=$(realpath $1)
+	local path_in_repo=$(path2repo ${path})
+
+	if [ -f "${path_in_repo}" ]; then
+		rm -f ${path_in_repo}
+		echo "untrack ${path_in_repo} -> ${path}"
+	fi
+}
+
+function untrack() {
+	local path=$(realpath $1)
+
+	if [ -f "${path}" ]; then
+		_untrack_file ${path}
+	elif [ -d "${path}" ]; then
+		for file in $(find ${path} -type f -and -not -path './.git/*'); do
+			_untrack_file ${file}
+		done
+	fi
+}
+
+# install a file from git repo
+function _install_file() {
+	# formulate the path in repo, relative to the git repo
+	local path_in_repo=$(realpath --relative-to=$(git rev-parse --show-toplevel) $1)
+	local path=$(repo2path ${path_in_repo})
+
+	# determine if the file is in home or rootfs
+	if [[ "${path_in_repo}" =~ ^home || "${path_in_repo}" =~ ^rootfs ]]; then
+		# install the file
+		mkdir -p $(dirname ${path})
+		rm -f ${path}
+		cp ${path_in_repo} ${path}
+		chmod $(stat -c "%a" ${path_in_repo}) ${path}
+		chown $(stat -c "%u:%g" ${path_in_repo}) ${path}
+		echo "install ${path_in_repo} -> ${path}"
+	else # not in home or rootfs, ignore
+		echo "ignore ${path_in_repo}"
+	fi
+}
+
+function install() {
+	local path_in_repo=$1
+
+	if [ -f "${path_in_repo}" ]; then
+		_install_file ${path_in_repo}
+	elif [ -d "${path_in_repo}" ]; then
+		for file in $(find ${path_in_repo} -type f -and -not -path './.git/*'); do
+			_install_file ${file}
+		done
+	fi
+}
+
+function install_all() {
+	# install all files
+	for path_in_repo in $(git ls-files); do
+		_install_file ${path_in_repo}
+	done
+}
+
+function retrack() {
+	local path=$(realpath $1)
+	local path_in_repo=$(path2repo ${path})
+
+	if [ -f "${path}" ]; then
+		_untrack_file ${path}
+	fi
+	_track_file ${path}
+}
+
+function retrack_all() {
+	# track all files
+	for path_in_repo in $(git ls-files); do
+		local path=$(repo2path ${path_in_repo})
+		retrack ${path}
+	done
+}
+
+function list_tracked_file() {
+	local path_in_repo=$1
+
+	if exists "$path_in_repo"; then
+		echo ${path_in_repo} "->" $(sed -e "s|^home|${HOME}|" -e "s|^rootfs/|/|" <<<${path_in_repo})
+	elif [ -f "${path_in_repo}" ]; then
+		echo ${path_in_repo} "!>" $(sed -e "s|^home|${HOME}|" -e "s|^rootfs/|/|" <<<${path_in_repo})
+	else
+		echo ${path_in_repo} "-x"
+	fi
+}
+
+# list all tracked files
+function list_tracked_files() {
+	local path_in_repo=$(realpath $1)
+	path_in_repo=${path_in_repo#$(realpath $(git rev-parse --show-toplevel))}
+	path_in_repo=${path_in_repo#/}
+
+	if [ -f "${path_in_repo}" ]; then
+		list_tracked_file ${path_in_repo}
+	elif [ -d "${path_in_repo}" ]; then
+		for file in $(find ${path_in_repo} -type f -and -not -path './.git/*'); do
+			list_tracked_file ${file}
+		done
+	fi
+}
+
+case $1 in
+list)
+	list_tracked_files $2
+	;;
+track)
+	track $2
+	;;
+untrack)
+	untrack $2
+	;;
+retrack)
+	retrack $2
+	;;
+retrack_all)
+	retrack_all
+	;;
+install)
+	install $2
+	;;
+install_all)
+	install_all
+	;;
+*)
+	echo "Usage: $0 {list|track|untrack|retrack|install|install_all} <path>"
+	exit 1
+	;;
+esac

@@ -1,0 +1,2 @@
+clear Lock
+keycode  66 = Mode_switch NoSymbol Mode_switch
