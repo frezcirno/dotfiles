@@ -105,3 +105,13 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 # Kubernetes
 [ -x "$(command -v kubectl)" ] && source <(kubectl completion bash)
+
+# Atuin
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash --disable-up-arrow)"
+
+# CodeQL
+export PATH="$HOME/codeql/:$PATH"
+
+# QEMU-7
+export PATH="$HOME/src/qemu-7.0.0/build/:$PATH"
