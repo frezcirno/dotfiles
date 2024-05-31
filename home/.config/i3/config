@@ -288,7 +288,7 @@ exec --no-startup-id exec xmodmap ~/.Xmodmap
 exec --no-startup-id ~/.local/bin/alternating_layouts.py
 
 # James DSP
-exec --no-startup-id exec jamesdsp
+# exec --no-startup-id exec jamesdsp
 
 # 300s to close the screen
 exec --no-startup-id xset dpms 300 300 300

@@ -108,7 +108,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 # Atuin
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
-eval "$(atuin init bash --disable-up-arrow)"
+eval "$($HOME/.local/bin/atuin init bash --disable-up-arrow)"
 
 # CodeQL
 export PATH="$HOME/codeql/:$PATH"

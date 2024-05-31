@@ -146,6 +146,9 @@ function retrack() {
 function retrack_all() {
 	# track all files
 	for path_in_repo in $(git ls-files); do
+		if [[ "${path_in_repo}" = "dotfile" ]]; then
+			continue
+		fi
 		local path=$(repo2path ${path_in_repo})
 		retrack ${path}
 	done
