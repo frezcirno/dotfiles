@@ -18,5 +18,5 @@ EnabledIMList=fcitx-keyboard-us:True,rime:True,fcitx-keyboard-cn:False,fcitx-key
 # 在客户端窗口中显示预编辑字符串
 # 可选值：
 # True False
-#PreeditStringInClientWindow=True
+PreeditStringInClientWindow=False
 

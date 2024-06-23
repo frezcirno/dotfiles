@@ -1,7 +1,26 @@
+if [[ -n "$__FC_BASH_ALIASES" ]]; then return; fi
+__FC_BASH_ALIASES=1
+
 # how many commands
 HISTSIZE=500000
 # how many lines
 HISTFILESIZE=1000000
+
+__fc_path_in_path() {
+    local path=$1
+    local search=$2
+    local IFS=:
+    for p in $path; do
+        if [[ "$p" == "$search" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+if [ -d "$HOME/.local/bin" ] && ! __fc_path_in_path "$PATH" "$HOME/.local/bin"; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
 
 __fc_exit_status() {
     local exit=$?
@@ -11,9 +30,9 @@ __fc_exit_status() {
 }
 
 __fc_git_symbolic_name() {
-    git symbolic-ref -q --short HEAD 2>/dev/null \
-    || git describe --tags --exact-match 2>/dev/null \
-    || git rev-parse --short HEAD 2>/dev/null
+    git symbolic-ref -q --short HEAD 2>/dev/null ||
+        git describe --tags --exact-match 2>/dev/null ||
+        git rev-parse --short HEAD 2>/dev/null
 }
 
 __fc_par() {
@@ -24,6 +43,8 @@ __fc_par() {
     fi
 }
 
+__fc=""
+
 # tput bold; tput setaf 1
 PS1='\[\e[01;31m\]$(__fc_exit_status)\[$(tput sgr0)\]\
 \[$(tput setaf 214)\](\t)\
@@ -32,7 +53,7 @@ PS1='\[\e[01;31m\]$(__fc_exit_status)\[$(tput sgr0)\]\
 \[$(tput bold; tput setaf 2)\]\h\
 \[$(tput sgr0)\]:\
 \[$(tput bold; tput setaf 4)\]\w\
-\[$(tput setaf 13)\]$(__fc_par $(__fc_git_symbolic_name))\
+\[$(tput setaf 13)\]$(__fc_par $(__fc_git_symbolic_name))$__fc\
 \[$(tput setaf 2)\]\$\
 \[$(tput sgr0)\] '
 
@@ -63,6 +84,10 @@ fi
 
 alias c=z
 
+# Atuin
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$($HOME/.local/bin/atuin init bash --disable-up-arrow)"
+
 # Golang
 export PATH="/usr/local/go/bin:$PATH"
 export GOPATH="$HOME/go"
@@ -77,6 +102,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"                   # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
+# Yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -105,10 +131,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 # Kubernetes
 [ -x "$(command -v kubectl)" ] && source <(kubectl completion bash)
-
-# Atuin
-[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
-eval "$($HOME/.local/bin/atuin init bash --disable-up-arrow)"
 
 # CodeQL
 export PATH="$HOME/codeql/:$PATH"
