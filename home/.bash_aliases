@@ -1,6 +1,3 @@
-if [[ -n "$__FC_BASH_ALIASES" ]]; then return; fi
-__FC_BASH_ALIASES=1
-
 # how many commands
 HISTSIZE=500000
 # how many lines
@@ -85,6 +82,7 @@ fi
 alias c=z
 
 # Atuin
+unset PROMPT_COMMAND
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$($HOME/.local/bin/atuin init bash --disable-up-arrow)"
 
@@ -118,22 +116,11 @@ export PATH="$HOME/.gem/ruby/3.0.0/bin:$PATH"
 export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
-# fbinfer
-export PATH="$HOME/infer-linux64-v1.1.0/bin:$PATH"
-
 # Jabba
 [ -s "$HOME/.jabba/jabba.sh" ] && source "$HOME/.jabba/jabba.sh"
 
-# SDKMAN
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
 # Kubernetes
 [ -x "$(command -v kubectl)" ] && source <(kubectl completion bash)
-
-# CodeQL
-export PATH="$HOME/codeql/:$PATH"
 
 # QEMU-7
 export PATH="$HOME/src/qemu-7.0.0/build/:$PATH"
