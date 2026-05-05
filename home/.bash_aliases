@@ -122,5 +122,8 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 # Kubernetes
 [ -x "$(command -v kubectl)" ] && source <(kubectl completion bash)
 
+# CodeQL
+# export PATH="$HOME/codeql/:$PATH"
+
 # QEMU-7
 export PATH="$HOME/src/qemu-7.0.0/build/:$PATH"
